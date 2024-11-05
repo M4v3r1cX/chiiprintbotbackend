@@ -20,7 +20,8 @@ import com.spire.pdf.PdfDocument;
 @Service
 public class PrintFileService {
 	
-	public void setPrint(String toPrint) throws Exception {
+	public boolean setPrint(String toPrint) throws Exception {
+		boolean ret = false;
 		byte[] bytes = Base64.getDecoder().decode(toPrint);
 		Printable printable = null;
 		if (isDocx(bytes)) {
@@ -30,21 +31,30 @@ public class PrintFileService {
 			System.out.println("Imprimiendo PDF");
 			printable = new PdfDocument(bytes);
 		}
-		print(printable);
+		ret = print(printable);
+		return ret;
 	}
 	
-	private void print(Printable printable) throws Exception {
-		PrinterJob printerJob = PrinterJob.getPrinterJob();
-		PrintService printService = findPrintService("Brother DCP-T710W Printer");
-		printerJob.setPrintService(printService);
-        PageFormat pageFormat = printerJob.defaultPage();
-        Paper paper = pageFormat.getPaper();
-        paper.setImageableArea(0, 0, pageFormat.getWidth(), pageFormat.getHeight());
-        pageFormat.setPaper(paper);
-        printerJob.setCopies(1);
-        printerJob.setPrintable(printable,pageFormat);
+	private boolean print(Printable printable) throws Exception {
+		boolean ret = true;
+		try {
+			PrinterJob printerJob = PrinterJob.getPrinterJob();
+			PrintService printService = findPrintService("Brother DCP-T710W Printer");
+			printerJob.setPrintService(printService);
+	        PageFormat pageFormat = printerJob.defaultPage();
+	        Paper paper = pageFormat.getPaper();
+	        paper.setImageableArea(0, 0, pageFormat.getWidth(), pageFormat.getHeight());
+	        pageFormat.setPaper(paper);
+	        printerJob.setCopies(1);
+	        printerJob.setPrintable(printable,pageFormat);
 
-        printerJob.print();
+	        printerJob.print();
+		} catch (Exception ex) {
+			ret = false;
+		}
+		
+        
+        return ret;
 	}
 	
 	private PrintService findPrintService(String printerName) {

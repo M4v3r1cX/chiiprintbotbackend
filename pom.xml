@@ -52,11 +52,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/e-iceblue/spire.pdf -->
 		<dependency>
 		    <groupId>e-iceblue</groupId>
 		    <artifactId>spire.office.free</artifactId>
 		    <version>5.3.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>jakarta.mail</groupId>
+		    <artifactId>jakarta.mail-api</artifactId>
 		</dependency>
 	</dependencies>
 
